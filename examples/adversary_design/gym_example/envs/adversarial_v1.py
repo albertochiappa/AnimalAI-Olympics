@@ -12,7 +12,7 @@ class Adversarial_v1(gym.Env):
     The action dimension is the number of squares in the grid, and each action
     chooses where the next item should be placed. '''
 
-    def __init__(self, n_clutter=50, size=15):
+    def __init__(self, n_clutter=1, size=38):
         '''Initializes environment in which adversary places goal, agent, obstacles.
         Args:
           n_clutter: The maximum number of obstacles the adversary can place.
@@ -38,10 +38,10 @@ class Adversarial_v1(gym.Env):
         
         # set max reward
         self.max_shortest_path_length = (self.size-1) * (self.size-1) + 1
-        self.MAX_REWARD = 100
+        self.MAX_REWARD = 10
         
         # set min reward 
-        self.MIN_REWARD = -10
+        self.MIN_REWARD = -1
         
         self.seed()
         
@@ -99,11 +99,8 @@ class Adversarial_v1(gym.Env):
             for w in self.wall_locs:
                 self.graph.remove_node(w)
             self.compute_shortest_path()
-            
-            if self.shortest_path_length <= 2:
-                self.reward = self.MAX_REWARD
-            else:
-                self.reward = self.MIN_REWARD
+                
+            self.reward = self.shortest_path_length - 20
             
             self.done = True
               
