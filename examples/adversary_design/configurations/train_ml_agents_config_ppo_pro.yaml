@@ -1,0 +1,28 @@
+AnimalAI:
+  batch_size: 64
+  beta: 0.01
+  buffer_size: 2024
+  epsilon: 0.2
+  hidden_units: 256
+  lambd: 0.95
+  learning_rate: 0.0003
+  learning_rate_schedule: linear
+  max_steps: 1160000.0
+  memory_size: 128
+  normalize: false
+  num_epoch: 3
+  num_layers: 1
+  reward_signals:
+    curiosity:
+      encoding_size: 256
+      gamma: 0.99
+      strength: 0.01
+    extrinsic:
+      gamma: 0.99
+      strength: 1.0
+  sequence_length: 64
+  summary_freq: 10000
+  time_horizon: 128
+  trainer: ppo
+  use_recurrent: false
+  vis_encode_type: simple
