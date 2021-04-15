@@ -3,6 +3,7 @@ examples/env/*
 
 # Tensorflow Model Info
 examples/models/*
+examples/adversary_design/models/*
 summaries/
 logs/
 !examples/models/self_control_curriculum_pre_trained/
