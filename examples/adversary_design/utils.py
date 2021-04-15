@@ -170,7 +170,7 @@ def update_trainer(trainer_config_path, steps_add=1.0e4):
 #logs_dir = "summaries/"
 #os.makedirs(logs_dir, exist_ok=True)
 
-def train_protagonist(arena_config, n_steps_trainer = 1.0e4, base_port_protagonist = 4000, run_id_protagonist = "protagonist", load_model = False, trainer_config_path = "../configurations/training_configurations/train_ml_agents_config_ppo_10fs.yaml"):
+def train_protagonist(arena_config, n_steps_trainer = 1.0e4, base_port_protagonist = 4000, run_id_protagonist = "protagonist", load_model = False, trainer_config_path = "configurations/train_ml_agents_config_ppo_10fs.yaml"):
     
     '''
     Function to train a protagonist AnimalAI training.
@@ -214,7 +214,7 @@ def train_protagonist(arena_config, n_steps_trainer = 1.0e4, base_port_protagoni
     
     return df.loc[len(df)-1, 'Environment/Cumulative Reward']
 
-def train_antagonist(arena_config, n_steps_trainer = 1.0e4, base_port_antagonist = 5000, run_id_antagonist = "antagonist", load_model = False, trainer_config_path = "../configurations/training_configurations/train_ml_agents_config_ppo_10fs_2.yaml"):
+def train_antagonist(arena_config, n_steps_trainer = 1.0e4, base_port_antagonist = 5000, run_id_antagonist = "antagonist", load_model = False, trainer_config_path = "configurations/train_ml_agents_config_ppo_10fs_2.yaml"):
     
     '''
     Function to train a antagonist AnimalAI training.

@@ -34,8 +34,8 @@ class Adversarial_v5(gym.Env):
         self.base_port_antagonist = 5000
         self.run_id_protagonist = "self_control_curriculum_protagonist"
         self.run_id_antagonist = "self_control_curriculum_antagonist"
-        self.trainer_config_path_pro = "../configurations/training_configurations/train_ml_agents_config_ppo_pro.yaml"
-        self.trainer_config_path_ant = "../configurations/training_configurations/train_ml_agents_config_ppo_ant.yaml"
+        self.trainer_config_path_pro = "configurations/train_ml_agents_config_ppo_pro.yaml"
+        self.trainer_config_path_ant = "configurations/train_ml_agents_config_ppo_ant.yaml"
         self.n_steps_trainer = 10000
 
         # Create spaces for adversary agent's specs: all spaces where it can place an object
