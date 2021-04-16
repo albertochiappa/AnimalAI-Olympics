@@ -31,6 +31,15 @@ from animalai_train.run_training_aai import run_training_aai;
 import os
 import pandas as pd
 
+from csv import writer
+def append_list_as_row(file_name, list_of_elem):
+    # Open file in append mode
+    with open(file_name, 'a+', newline='') as write_obj:
+        # Create a writer object from csv module
+        csv_writer = writer(write_obj)
+        # Add contents of list as last row in the csv file
+        csv_writer.writerow(list_of_elem)
+
 #-----------------------------go from matrix of state to AnimalAI environment------------------------------
 
 class MyArenaConfig(yaml.YAMLObject):
@@ -90,7 +99,7 @@ def matrix2arena(matrix):
     
     return my_config
 
-def visualize(state):
+def visualize(state, show=True, save=False, n_episode=[]):
     '''Plots a given state matrix'''
     fig = plt.imshow(state, cmap=plt.get_cmap('Accent'))
     # values
@@ -105,7 +114,14 @@ def visualize(state):
     plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0. )
 
     plt.grid(False)
-    plt.show()
+    
+    if show:
+        plt.show()
+        
+    if save:
+        plt.savefig('figures/env' + str(n_episode) + '.png')
+        np.save('matrix/env' + str(n_episode) + '.npy', state)
+        
     
 #---------------------------------------Check working environment------------------------
     
@@ -196,6 +212,7 @@ def train_protagonist(arena_config, n_steps_trainer = 1.0e4, base_port_protagoni
         env_path=environment_path,
         run_id=run_id_protagonist,
         base_port=base_port_protagonist,
+        seed = 0,
         load_model=load_model,
         train_model=True,
         arena_config=arena_config 
@@ -239,12 +256,13 @@ def train_antagonist(arena_config, n_steps_trainer = 1.0e4, base_port_antagonist
         trainer_config=load_config(trainer_config_path),
         env_path=environment_path,
         run_id=run_id_antagonist,
+        seed = 1,
         base_port=base_port_antagonist,
         load_model=load_model,
         train_model=True,
         arena_config=arena_config 
     )
-    run_training_aai(0, args)
+    run_training_aai(1, args)
     
     data_path = 'summaries/' + run_id_antagonist + '_AnimalAI.csv'
     df = pd.read_csv(data_path)

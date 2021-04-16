@@ -7,6 +7,7 @@ import networkx as nx
 from networkx import grid_graph
 
 from utils import *
+import csv
 
 class Adversarial_v4(gym.Env):
     ''' Grid world where an adversary build the environment the agent plays.
@@ -48,6 +49,12 @@ class Adversarial_v4(gym.Env):
         self.seed()
         
         self.reset()
+        
+        self.file_name = 'results_adv4.csv'
+        
+        with open(self.file_name, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(["n_episode", "shortest_path_length", "reward_pro", "reward_ant"])
         
     def reset(self):
         self.agent_start_pos = -1
@@ -112,7 +119,7 @@ class Adversarial_v4(gym.Env):
             arena_config = matrix2arena(matrix)
             
             # visualize environment
-            visualize(matrix) 
+            visualize(matrix, show=False, save=True, n_episode=self.n_episodes) 
             
             # run protagonist training
             reward_protagonist = train_protagonist(arena_config=arena_config, n_steps_trainer=self.n_steps_trainer, \
@@ -123,11 +130,14 @@ class Adversarial_v4(gym.Env):
                                        base_port_antagonist=self.base_port_antagonist, \
                                        load_model=self.load_model)
             
+            list_of_elem = [self.n_episodes, self.shortest_path_length, reward_protagonist, reward_antagonist]
+            append_list_as_row(self.file_name, list_of_elem)
+            
             # update trainer (add steps)
             self.n_episodes += 1
             self.load_model = True # after the firs training we can load the model
             
-            self.reward = reward_antagonist - reward_protagonist
+            self.reward = reward_antagonist + reward_protagonist
             
             self.done = True
               
