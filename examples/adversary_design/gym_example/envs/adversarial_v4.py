@@ -33,7 +33,7 @@ class Adversarial_v4(gym.Env):
         self.load_model = False
         self.base_port_protagonist = 4000
         self.base_port_antagonist = 5000
-        self.n_steps_trainer = 10000
+        self.n_steps_trainer = 20000
 
         # Create spaces for adversary agent's specs: all spaces where it can place an object
         self.action_space = gym.spaces.Discrete(size**2)
@@ -124,11 +124,11 @@ class Adversarial_v4(gym.Env):
             # run protagonist training
             reward_protagonist = train_protagonist(arena_config=arena_config, n_steps_trainer=self.n_steps_trainer, \
                                        base_port_protagonist=self.base_port_protagonist, \
-                                       load_model=self.load_model)
+                                       load_model=self.load_model, num_envs=6)
             # run antagonist training
             reward_antagonist = train_antagonist(arena_config=arena_config, n_steps_trainer=self.n_steps_trainer, \
                                        base_port_antagonist=self.base_port_antagonist, \
-                                       load_model=self.load_model)
+                                       load_model=self.load_model, num_envs=6)
             
             list_of_elem = [self.n_episodes, self.shortest_path_length, reward_protagonist, reward_antagonist]
             append_list_as_row(self.file_name, list_of_elem)
