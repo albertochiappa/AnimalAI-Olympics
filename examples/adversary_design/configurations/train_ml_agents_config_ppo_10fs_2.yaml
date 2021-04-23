@@ -7,7 +7,7 @@ AnimalAI:
   lambd: 0.95
   learning_rate: 0.0003
   learning_rate_schedule: linear
-  max_steps: 20000
+  max_steps: 89000.0
   memory_size: 128
   normalize: false
   num_epoch: 3
@@ -21,7 +21,7 @@ AnimalAI:
       gamma: 0.99
       strength: 1.0
   sequence_length: 64
-  summary_freq: 10000
+  summary_freq: 500
   time_horizon: 128
   trainer: ppo
   use_recurrent: false

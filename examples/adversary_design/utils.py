@@ -74,7 +74,8 @@ def matrix2arena(matrix):
     position = np.where(matrix==1)
     position_goal = Vector3(x = position[0][0], y = 0, z = position[1][0])
     sizes_goal = Vector3(x = 2, y = 2, z = 2)
-    goal = Item(name = 'GoodGoal', positions = [position_goal], sizes = [sizes_goal])
+    color_goal = RGB(r = 200, g = 0, b = 4)
+    goal = Item(name = 'GoodGoal', positions = [position_goal], sizes = [sizes_goal], colors = [color_goal])
     items.append(goal)
 
     # create agent item
@@ -85,29 +86,41 @@ def matrix2arena(matrix):
 
     # create walls
     position = np.where(matrix==3)
-    for i in range(len(position[0])):
-        position_wall= Vector3(x = position[0][i], y = 0, z = position[1][i])
-        sizes_wall = Vector3(x = 2, y = 2, z = 2) # fixed size of the wall
-        color_wall = RGB(r = 200, g = 0, b = 4) # make wall red
-        wall = Item(name = 'Wall', positions = [position_wall], sizes = [sizes_wall], colors = [color_wall], rotations = [0])
-        items.append(wall)
+    if position:
+        for i in range(len(position[0])):
+            position_wall= Vector3(x = position[0][i], y = 0, z = position[1][i])
+            sizes_wall = Vector3(x = 2, y = 2, z = 2) # fixed size of the wall
+            color_wall = RGB(r = 200, g = 0, b = 4) # make wall red
+            wall = Item(name = 'Wall', positions = [position_wall], sizes = [sizes_wall], colors = [color_wall], rotations = [0])
+            items.append(wall)
 
     # Create Arena
-    my_arena = Arena(t=250, items=items, pass_mark = 0, blackouts = None)
+    my_arena = Arena(t=500, items=items, pass_mark = 0, blackouts = None)
     my_config = MyArenaConfig(my_arena)
         
     
     return my_config
 
-def visualize(state, show=True, save=False, n_episode=[]):
+def visualize(state, show=True, save=False, n_episode=[], wall=True):
     '''Plots a given state matrix'''
     fig = plt.imshow(state, cmap=plt.get_cmap('Accent'))
-    # values
-    values = np.array([0, 1, 2, 3])
-    #items
-    items = ['Arena', 'Goal', 'Agent', 'Wall']
+    
+    if wall:
+        # values
+        values = np.array([0, 1, 2, 3])
+        #items
+        items = ['Arena', 'Goal', 'Agent', 'Wall']
+        # colormap used by imshow
+        colors = [fig.cmap(fig.norm(value)) for value in values]
+    else:
+        # values
+        values = np.array([0, 1, 10])
+        #items
+        items = ['Arena', 'Goal', 'Agent']
+    
     # colormap used by imshow
     colors = [fig.cmap(fig.norm(value)) for value in values]
+        
     # create a patch (proxy artist) for every color 
     patches = [mpatches.Patch(color=colors[i], label="{l}".format(l=items[i]) ) for i in range(len(values)) ]
     # put those patched as legend-handles into the legend
@@ -216,19 +229,20 @@ def train_protagonist(arena_config, n_steps_trainer = 1.0e4, base_port_protagoni
         num_envs=num_envs,
         load_model=load_model,
         train_model=True,
-        arena_config=arena_config 
+        arena_config=arena_config,
+        keep_checkpoints = 1
     )
     run_training_aai(0, args)
     
     data_path = 'summaries/' + run_id_protagonist + '_AnimalAI.csv'
     df = pd.read_csv(data_path)
     print('PROTAGONIST: ')
-    print('Steps: ', df.loc[0, 'Steps'], ' Cumulative reward: ', df.loc[0, 'Environment/Cumulative Reward'], \
-     ' Episode Length: ', df.loc[0, 'Environment/Episode Length'])
-    print('Steps: ', df.loc[int(len(df)/2), 'Steps'], ' Cumulative reward: ', df.loc[int(len(df)/2), 'Environment/Cumulative Reward'], \
-         ' Episode Length: ', df.loc[int(len(df)/2), 'Environment/Episode Length'])
+    #print('Steps: ', df.loc[0, 'Steps'], ' Cumulative reward: ', df.loc[0, 'Environment/Cumulative Reward'], \
+    # ' Episode Length: ', df.loc[0, 'Environment/Episode Length'])
+    #print('Steps: ', df.loc[int(len(df)/2), 'Steps'], ' Cumulative reward: ', df.loc[int(len(df)/2), 'Environment/Cumulative Reward'], \
+     #    ' Episode Length: ', df.loc[int(len(df)/2), 'Environment/Episode Length'])
     print('Steps: ', df.loc[len(df)-1, 'Steps'], ' Cumulative reward: ', df.loc[len(df)-1, 'Environment/Cumulative Reward'], \
-         ' Episode Length: ', df.loc[len(df)-1, 'Environment/Episode Length'])
+        ' Episode Length: ', df.loc[len(df)-1, 'Environment/Episode Length'])
     
     return df.loc[len(df)-1, 'Environment/Cumulative Reward']
 
@@ -262,17 +276,18 @@ def train_antagonist(arena_config, n_steps_trainer = 1.0e4, base_port_antagonist
         num_envs=num_envs,
         load_model=load_model,
         train_model=True,
-        arena_config=arena_config 
+        arena_config=arena_config,
+        keep_checkpoints = 1
     )
     run_training_aai(1, args)
     
     data_path = 'summaries/' + run_id_antagonist + '_AnimalAI.csv'
     df = pd.read_csv(data_path)
     print('ANTAGONIST: ')
-    print('Steps: ', df.loc[0, 'Steps'], ' Cumulative reward: ', df.loc[0, 'Environment/Cumulative Reward'], \
-     ' Episode Length: ', df.loc[0, 'Environment/Episode Length'])
-    print('Steps: ', df.loc[int(len(df)/2), 'Steps'], ' Cumulative reward: ', df.loc[int(len(df)/2), 'Environment/Cumulative Reward'], \
-         ' Episode Length: ', df.loc[int(len(df)/2), 'Environment/Episode Length'])
+    #print('Steps: ', df.loc[0, 'Steps'], ' Cumulative reward: ', df.loc[0, 'Environment/Cumulative Reward'], \
+     #' Episode Length: ', df.loc[0, 'Environment/Episode Length'])
+    #print('Steps: ', df.loc[int(len(df)/2), 'Steps'], ' Cumulative reward: ', df.loc[int(len(df)/2), 'Environment/Cumulative Reward'], \
+     #    ' Episode Length: ', df.loc[int(len(df)/2), 'Environment/Episode Length'])
     print('Steps: ', df.loc[len(df)-1, 'Steps'], ' Cumulative reward: ', df.loc[len(df)-1, 'Environment/Cumulative Reward'], \
          ' Episode Length: ', df.loc[len(df)-1, 'Environment/Episode Length'])
     

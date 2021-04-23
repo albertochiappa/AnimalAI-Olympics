@@ -31,3 +31,13 @@ register(
     entry_point="gym_example.envs:Adversarial_v5",
 )
 
+register(
+    id="adversarial-v6",
+    entry_point="gym_example.envs:Adversarial_v6",
+)
+
+register(
+    id="adversarial-v62",
+    entry_point="gym_example.envs:Adversarial_v62",
+)
+

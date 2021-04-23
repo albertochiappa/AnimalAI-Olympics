@@ -12,7 +12,7 @@ class Adversarial_v2(gym.Env):
     The action dimension is the number of squares in the grid, and each action
     chooses where the next item should be placed. '''
 
-    def __init__(self, n_clutter=1, size=38):
+    def __init__(self, n_clutter=1, size=20):
         '''Initializes environment in which adversary places goal, agent, obstacles.
         Args:
           n_clutter: The maximum number of obstacles the adversary can place.
