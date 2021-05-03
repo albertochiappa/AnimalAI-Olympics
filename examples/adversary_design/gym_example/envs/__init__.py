@@ -6,3 +6,5 @@ from gym_example.envs.adversarial_v4 import Adversarial_v4
 from gym_example.envs.adversarial_v5 import Adversarial_v5
 from gym_example.envs.adversarial_v6 import Adversarial_v6
 from gym_example.envs.adversarial_v62 import Adversarial_v62
+from gym_example.envs.adversarial_v7 import Adversarial_v7
+from gym_example.envs.adversarial_v70 import Adversarial_v70

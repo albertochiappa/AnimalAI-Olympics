@@ -114,7 +114,7 @@ def visualize(state, show=True, save=False, n_episode=[], wall=True):
         colors = [fig.cmap(fig.norm(value)) for value in values]
     else:
         # values
-        values = np.array([0, 1, 10])
+        values = np.array([0, 1, 2])
         #items
         items = ['Arena', 'Goal', 'Agent']
     

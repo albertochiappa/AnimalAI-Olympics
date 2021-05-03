@@ -41,3 +41,13 @@ register(
     entry_point="gym_example.envs:Adversarial_v62",
 )
 
+register(
+    id="adversarial-v7",
+    entry_point="gym_example.envs:Adversarial_v7",
+)
+
+register(
+    id="adversarial-v70",
+    entry_point="gym_example.envs:Adversarial_v70",
+)
+
